@@ -1,0 +1,10 @@
+{
+  "name": "AegisLock - Student Digital Locker",
+  "description": "A private, zero-compromise digital locker for students to securely store documents, track application packs, utilize an in-browser PDF toolkit, and share credentials with expiring PIN links.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

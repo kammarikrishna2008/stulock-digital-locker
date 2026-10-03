@@ -1,0 +1,160 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Registered student locker account",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "college": { "type": "string" },
+        "rollNumber": { "type": "string" },
+        "hasPasskey": { "type": "boolean" },
+        "passkeyPin": { "type": "string" },
+        "storageQuotaBytes": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "lastLoginAt": { "type": "string" }
+      },
+      "required": ["id", "name", "email"]
+    },
+    "LockerDocument": {
+      "title": "LockerDocument",
+      "description": "A student document stored in StuLock",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "fileName": { "type": "string" },
+        "fileType": { "type": "string" },
+        "fileSize": { "type": "number" },
+        "dataUrl": { "type": "string" },
+        "issueDate": { "type": "string" },
+        "expiryDate": { "type": "string" },
+        "tags": { "type": "array" },
+        "uploadedAt": { "type": "string" },
+        "deletedAt": { "type": "string" },
+        "isPinProtected": { "type": "boolean" },
+        "pinCode": { "type": "string" }
+      },
+      "required": ["id", "userId", "title", "category", "fileType", "dataUrl"]
+    },
+    "ApplicationPack": {
+      "title": "ApplicationPack",
+      "description": "Curated bundle of documents for internships, jobs, or admissions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "purpose": { "type": "string" },
+        "documentIds": { "type": "array" },
+        "targetPortal": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" },
+        "isSinglePdfExported": { "type": "boolean" },
+        "exportPdfUrl": { "type": "string" }
+      },
+      "required": ["id", "userId", "title", "documentIds"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "Document categorization tags",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "name": { "type": "string" },
+        "label": { "type": "string" },
+        "description": { "type": "string" },
+        "color": { "type": "string" },
+        "isCustom": { "type": "boolean" }
+      },
+      "required": ["id", "name", "label"]
+    },
+    "ShareLink": {
+      "title": "ShareLink",
+      "description": "Expiring PIN-protected share link for employers & universities",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "documentId": { "type": "string" },
+        "documentTitle": { "type": "string" },
+        "token": { "type": "string" },
+        "pinHash": { "type": "string" },
+        "requiresPin": { "type": "boolean" },
+        "expiresAt": { "type": "string" },
+        "permission": { "type": "string", "enum": ["view", "download"] },
+        "watermarkText": { "type": "string" },
+        "revoked": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "documentId", "token", "expiresAt"]
+    },
+    "AccessLog": {
+      "title": "AccessLog",
+      "description": "Audit trail log when a share link is viewed or downloaded",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "linkId": { "type": "string" },
+        "documentId": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "device": { "type": "string" },
+        "ipLocation": { "type": "string" },
+        "action": { "type": "string", "enum": ["view", "download"] }
+      },
+      "required": ["id", "linkId", "timestamp", "action"]
+    },
+    "VerificationCode": {
+      "title": "VerificationCode",
+      "description": "EmailJS dispatched 6-digit OTP verification code",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "code": { "type": "string" },
+        "expiresAt": { "type": "string" },
+        "verified": { "type": "boolean" },
+        "purpose": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["email", "code", "expiresAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "entity": "User",
+      "description": "Student user profile and authentication settings"
+    },
+    "/documents/{docId}": {
+      "entity": "LockerDocument",
+      "description": "Encrypted student documents and PDFs"
+    },
+    "/packs/{packId}": {
+      "entity": "ApplicationPack",
+      "description": "Compiled application packs"
+    },
+    "/categories/{categoryId}": {
+      "entity": "Category",
+      "description": "Custom student document categories"
+    },
+    "/shareLinks/{linkId}": {
+      "entity": "ShareLink",
+      "description": "Expiring PIN access links"
+    },
+    "/accessLogs/{logId}": {
+      "entity": "AccessLog",
+      "description": "Access tracking audit logs"
+    },
+    "/verificationCodes/{codeId}": {
+      "entity": "VerificationCode",
+      "description": "OTP codes dispatched via EmailJS"
+    }
+  }
+}
